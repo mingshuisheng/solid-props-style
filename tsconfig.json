@@ -20,7 +20,6 @@
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
 
-
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,

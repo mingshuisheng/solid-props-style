@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import solid from 'vite-plugin-solid'
-import typescript from "@rollup/plugin-typescript"
+import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
+import typescript from "@rollup/plugin-typescript";
 
 export default defineConfig({
   plugins: [solid()],
@@ -10,22 +10,22 @@ export default defineConfig({
       entry: "./src/libs.ts",
       formats: ["es"],
       name: "libs",
-      fileName: 'libs'
+      fileName: "libs",
     },
-    rollupOptions:{
+    rollupOptions: {
       external: ["solid-js", "solid-js/web"],
       output: {
         globals: {
           "solid-js": "solid-js",
-          "solid-js/web": "solid-js/web"
-        }
+          "solid-js/web": "solid-js/web",
+        },
       },
       plugins: [
         typescript({
-          "rootDir": "./src",
+          rootDir: "./src",
           exclude: ["index.tsx", "pages/*.tsx"],
-        })
-      ]
-    }
-  }
-})
+        }),
+      ],
+    },
+  },
+});
