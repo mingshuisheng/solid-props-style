@@ -4,11 +4,13 @@ import { wrapperCustomComponentProps } from "../utils";
 
 const MyCom = wrapperCustomComponentProps<{ text: string }>((props) => {
   return (
-    <Div class={props.class} style={props.style} classList={props.classList}>
-      {(function () {
-        console.log(props);
-        return props.text;
-      })()}
+    <Div
+      class={props.class}
+      style={props.style}
+      classList={props.classList}
+      {...props.custom}
+    >
+      {props.text}
     </Div>
   );
 });
@@ -25,6 +27,7 @@ function App() {
       classList={{ ooo: show() }}
       userSelect="none"
       backgroundColor="green"
+      custom:oo-b={color()}
     >
       qqq
       <Input color="green" value="1" disabled={true} />
@@ -36,6 +39,7 @@ function App() {
             color: "black",
           },
         }}
+        custom:oot-b={color()}
       />
     </Div>
   );
