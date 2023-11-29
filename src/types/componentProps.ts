@@ -2,7 +2,11 @@ import { JSX } from "solid-js";
 import { StyleProps, ClassStyle } from "./styleProps.ts";
 
 export interface CustomProps {
-  [key: `custom:${string}`]: any;
+  [key: `attr:${string}`]: any;
+}
+
+export interface StyleVarProps {
+  [key: `var:${string}`]: any;
 }
 
 export interface ComponentProps extends StyleProps {
@@ -13,5 +17,5 @@ export type CustomComponentProps = Pick<
   JSX.HTMLAttributes<{}>,
   "class" | "style" | "classList"
 > & {
-  custom?: CustomProps;
+  attrs?: CustomProps;
 };

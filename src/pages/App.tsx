@@ -8,7 +8,7 @@ const MyCom = wrapperCustomComponentProps<{ text: string }>((props) => {
       class={props.class}
       style={props.style}
       classList={props.classList}
-      {...props.custom}
+      {...props.attrs}
     >
       {props.text}
     </Div>
@@ -27,19 +27,20 @@ function App() {
       classList={{ ooo: show() }}
       userSelect="none"
       backgroundColor="green"
-      custom:oo-b={color()}
+      attr:oo-b={color()}
+      var:my-data={color()}
     >
       qqq
       <Input color="green" value="1" disabled={true} />
       <MyCom
         text="6666"
-        color="#ccc"
+        color="var(--my-data)"
         classStyle={{
           "&:hover": {
             color: "black",
           },
         }}
-        custom:oot-b={color()}
+        attr:oot-b={color()}
       />
     </Div>
   );
