@@ -1,7 +1,6 @@
 import { Div, Input } from "../components";
-import { JSX, createSignal, mergeProps, splitProps } from "solid-js";
+import { createSignal } from "solid-js";
 import { wrapperCustomComponentProps } from "../utils";
-import { Dynamic } from "solid-js/web";
 
 const MyCom = wrapperCustomComponentProps<{ text: string }>((props) => {
   return (
@@ -26,7 +25,7 @@ function App() {
       display="flex"
       color={color()}
       onClick={() => setColor((pre) => (pre === "red" ? "blue" : "red"))}
-      classList={{ ooo: true }}
+      classList={{ ooo: show() }}
       userSelect="none"
       backgroundColor="green"
       attr:oo-b={color()}
