@@ -37,10 +37,19 @@ export function processClass<T extends ClassProps & StyleVarProps>(
       ...classProps.classStyle,
       ...varPropsProcessed,
     };
-    if (Object.keys(targetStyle).length) {
-      let className = css(targetStyle);
-      classList[`${className}`] = true;
-    }
+    const keys = Object.keys(targetStyle);
+
+    keys.forEach((key) => {
+      let className = css({
+        [key]: targetStyle[key],
+      });
+      classList[className] = true;
+    });
+
+    // if (Object.keys(targetStyle).length) {
+    //   let className = css(targetStyle);
+    //   classList[`${className}`] = true;
+    // }
     return classList;
   };
 

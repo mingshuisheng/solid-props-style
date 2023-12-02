@@ -2,7 +2,7 @@
   "author": "mingshuisheng",
   "name": "solid-props-style",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/libs.js",
   "types": "dist/libs.d.ts",
   "repository": "https://github.com/mingshuisheng/solid-props-style",
