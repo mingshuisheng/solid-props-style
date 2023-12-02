@@ -24,7 +24,7 @@ export function processClass<T extends ClassProps & StyleVarProps>(
   );
 
   const propStyleToClass = () => {
-    let classList = { ...classProps.classList };
+    let classList = { ...classProps.classList } as any;
     let varPropsProcessed: Record<`--${string}`, any> = {};
 
     varKeys.forEach(
@@ -45,11 +45,16 @@ export function processClass<T extends ClassProps & StyleVarProps>(
   };
 
   return mergeProps(other, {
+    // bug fix: class must be before classList, otherwise there will only be class
+    get class() {
+      return classProps.class;
+    },
     get classList() {
       return propStyleToClass();
     },
-    get class() {
-      return;
-    },
+    // that is not work
+    // get class() {
+    //   return classProps.class;
+    // },
   }) as any;
 }
