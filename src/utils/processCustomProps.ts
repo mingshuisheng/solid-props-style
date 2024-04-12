@@ -1,10 +1,8 @@
-import { mergeProps, splitProps } from "solid-js";
-import { CustomProps } from "../types";
+import {mergeProps, splitProps} from "solid-js";
+import {CustomProps} from "../types";
 
-export function processCustomProps<T extends CustomProps>(
-  props: T
-): Omit<T, keyof CustomProps> {
-  let keys = Object.keys(props).filter((prop) =>
+export function processCustomProps<T>(props: T): T {
+  let keys = Object.keys(props as any).filter((prop) =>
     prop.startsWith("attr:")
   ) as `attr:${string}`[];
   const [custom, other] = splitProps(props as CustomProps, keys);
