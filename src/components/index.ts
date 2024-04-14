@@ -1,4 +1,4 @@
-import { JSX } from "solid-js/jsx-runtime";
+import { JSX } from "solid-js";
 import { generatorTag, wrapperTagComponentProps } from "../utils";
 
 function tagWrapper<T extends keyof JSX.HTMLElementTags>(tagName: T) {
