@@ -35,4 +35,5 @@ export const styleKeys = [
   "itemsCenter",
   "textCenter",
   "justifyCenter",
+  "flex1",
 ];

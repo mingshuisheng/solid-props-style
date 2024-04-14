@@ -1,6 +1,6 @@
 import { createEffect, mergeProps, splitProps } from "solid-js";
 import { css } from "../css";
-import { styleKeys } from "./defaultStyleProps";
+import { styleKeys } from "./styleKeys.ts";
 import { flow } from "./flow.ts";
 import type { CSSObject } from "@emotion/serialize";
 import { ExtendsPropsKeys } from "../types";
@@ -172,6 +172,7 @@ const presetMap: Record<ExtendsPropsKeys, CSSObject> = {
   itemsCenter: { alignItems: "center" },
   textCenter: { textAlign: "center" },
   justifyCenter: { justifyContent: "center" },
+  flex1: { flex: 1 },
 };
 
 function processStyle(key: string, value: any): CSSObject {

@@ -39,7 +39,8 @@ export type ExtendsBooleanKeys =
   | "boxContent"
   | "itemsCenter"
   | "textCenter"
-  | "justifyCenter";
+  | "justifyCenter"
+  | "flex1"
 
 export interface ExtendsProps extends Record<ExtendsBooleanKeys, boolean> {}
 export type ExtendsPropsKeys = keyof ExtendsProps;
