@@ -1,9 +1,16 @@
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
-import typescript from "@rollup/plugin-typescript";
+import dts from "vite-plugin-dts";
+import typeTransformPlugin from "type-transform-utils/vite"
 
 export default defineConfig({
-  plugins: [solid()],
+  plugins: [
+    solid(),
+    typeTransformPlugin(),
+    dts({
+      exclude: ["src/index.tsx", "src/pages/**/*.*"]
+    })
+  ],
   build: {
     target: "esnext",
     lib: {
@@ -20,12 +27,6 @@ export default defineConfig({
           "solid-js/web": "solid-js/web",
         },
       },
-      plugins: [
-        typescript({
-          rootDir: "./src",
-          exclude: ["index.tsx", "pages/*.tsx"],
-        }),
-      ],
     },
   },
 });
