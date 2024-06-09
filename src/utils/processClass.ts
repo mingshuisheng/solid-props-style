@@ -1,10 +1,10 @@
-import { createEffect, mergeProps, splitProps } from "solid-js";
+import { mergeProps, splitProps, $PROXY } from "solid-js";
 import { css } from "../css";
 import { styleKeys } from "./styleKeys.ts";
 import { flow } from "./flow.ts";
 import type { CSSObject } from "@emotion/serialize";
 import { ExtendsPropsKeys } from "../types";
-import { isProxy } from "./isSolidProxy.ts";
+import hashString from "@emotion/hash";
 
 export function processClassStyle<T>(props: T): T {
   const [classProps, otherProps] = splitProps(props as any, [
@@ -35,25 +35,31 @@ export function processClassStyle<T>(props: T): T {
 }
 
 const insertedVar = new Set<string>();
+function createVarCss(key: string, realValue: any): any {
+  const selectorValue = typeof realValue === "boolean" ? realValue : "css-" + hashString(JSON.stringify(realValue))
+  const selector = `[${key}="${selectorValue}"]`;
+  if (insertedVar.has(selector)) {
+    return selectorValue;
+  }
+  insertedVar.add(selector);
+  try {
+    css({ [`${key.replace("var:", "--")}`]: realValue }, selector);
+  } catch (e) {
+    console.error(e);
+  }
+  return selectorValue
+}
 
 export function processVar<T>(props: T): T {
-  createEffect(() => {
-    const varKeys = Object.keys(props as any).filter((prop) =>
-      prop.startsWith("var:")
-    ) as `var:${string}`[];
-
-    varKeys.forEach((key) => {
-      const value = (props as any)[key];
-      const selector = `[${key}="${value}"]`;
-      if (insertedVar.has(selector)) {
-        return;
+  const propsRef = props as any
+  return createPropsProxy(props, {
+    get(_, key) {
+      if (key === $PROXY) {
+        return propsRef
       }
-      insertedVar.add(selector);
-      css({ [`${key.replace("var:", "--")}`]: value }, selector);
-    });
-  });
-
-  return props;
+      return typeof key === "string" && key.includes("var:") ? createVarCss(key, propsRef[key]) : propsRef[key]
+    },
+  })
 }
 
 const processStyleSelectors = flow<[string, string]>(
@@ -63,47 +69,38 @@ const processStyleSelectors = flow<[string, string]>(
 );
 
 const insertedStyle = new Set<string>();
-function createCss(key: string, props: any) {
-  const value = props[key];
-  const selector: string =
-    typeof value === "undefined" ? `[${key}]` : `[${key}="${value}"]`;
+function createCss(key: string, realValue: any): any {
+  const selectorValue = typeof realValue === "boolean" ? realValue : "css-" + hashString(typeof realValue === "undefined" ? "undefined" : JSON.stringify(realValue))
+  const selector: string = `[${key}="${selectorValue}"]`;
   const [_, realSelector] = processStyleSelectors([key, selector]);
   if (insertedStyle.has(realSelector)) {
-    return;
+    return selectorValue;
   }
   insertedStyle.add(realSelector);
-  let style = processStyle(key, value);
+  let style = processStyle(key, realValue);
   try {
     css(style, realSelector);
   } catch (e) {
     console.error(e);
   }
+
+  return selectorValue
 }
 
-function getStyleKeys(props: any): string[] {
-  return Object.keys(props as any).filter(
-    (key) => !key.includes("var:") && styleKeyReg.some((reg) => reg.test(key))
-  );
-}
+const styleKeyReg = styleKeys.map((key) => RegExp(`^(.+:${key}|${key}$)`));
+const isStyleKey = (key: string) => styleKeyReg.some((reg) => reg.test(key))
 
-const styleKeyReg = styleKeys.map((key) => RegExp(`^.*:${key}|${key}$`, "g"));
 export function processStyleKeys<T>(props: T): T {
-  if (isProxy(props)) {
-    // if is Proxy need wrap keys
-    createEffect(() => {
-      getStyleKeys(props).forEach((key) => {
-        createCss(key, props);
-      });
-    });
-  } else {
-    getStyleKeys(props).forEach((key) => {
-      createEffect(() => {
-        createCss(key, props);
-      });
-    });
-  }
+  const propsRef = props as any
+  return createPropsProxy(props, {
+    get(_, key) {
+      if (key === $PROXY) {
+        return propsRef
+      }
 
-  return props;
+      return typeof key === "string" && !key.includes("var:") && isStyleKey(key) ? createCss(key, propsRef[key]) : propsRef[key]
+    },
+  })
 }
 
 function processDark([key, selector]: [string, string]): [string, string] {
@@ -113,7 +110,7 @@ function processDark([key, selector]: [string, string]): [string, string] {
   return [key, selector];
 }
 
-const pseudoClasses = ["hover", "focus"];
+const pseudoClasses = ["hover", "focus", "active"];
 function processPseudoClass([key, selector]: [string, string]): [
   string,
   string
@@ -163,6 +160,7 @@ const presetMap: Record<ExtendsPropsKeys, CSSObject> = {
   flexRow: { flexDirection: "row" },
   relative: { position: "relative" },
   absolute: { position: "absolute" },
+  sticky: { position: "sticky" },
   fixed: { position: "fixed" },
   hFull: { height: "100%" },
   wFull: { width: "100%" },
@@ -171,7 +169,14 @@ const presetMap: Record<ExtendsPropsKeys, CSSObject> = {
   boxContent: { boxSizing: "content-box" },
   itemsCenter: { alignItems: "center" },
   textCenter: { textAlign: "center" },
+  justifyNormal: { justifyContent: "normal" },
+  justfyStart: { justifyContent: "flex-start" },
+  justfyEnd: { justifyContent: "flex-end" },
   justifyCenter: { justifyContent: "center" },
+  justfyBetween: { justifyContent: "space-between" },
+  justfyAround: { justifyContent: "space-around" },
+  justfyEvenly: { justifyContent: "space-evenly" },
+  justfyStretch: { justifyContent: "stretch" },
   flex1: { flex: 1 },
 };
 
@@ -185,4 +190,37 @@ function processStyle(key: string, value: any): CSSObject {
       [`${attr}`]: valueMap[value] ?? value,
     }
   );
+}
+
+const trueFn = () => true
+function createPropsProxy(props: any, handler: ProxyHandler<any> = {}): any {
+  return new Proxy({}, Object.assign({
+    get(_, key) {
+      if (key === $PROXY) {
+        return props
+      }
+
+      return props
+    },
+    has(_, key) {
+      if (key === $PROXY) return true;
+      return key in props
+    },
+    set: trueFn,
+    deleteProperty: trueFn,
+    getOwnPropertyDescriptor(_, key) {
+      return {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return props[key]
+        },
+        set: trueFn,
+        deleteProperty: trueFn
+      }
+    },
+    ownKeys() {
+      return Object.keys(props)
+    }
+  } as ProxyHandler<any>, handler))
 }

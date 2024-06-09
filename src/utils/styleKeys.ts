@@ -1,39 +1,4 @@
-export const styleKeys = [
-  "d",
-  "h",
-  "w",
-  "c",
-  "userSelect",
-  "bg",
-  "z",
-  "objectFit",
-  "boxSizing",
-  "transition",
-  "transform",
-  "filter",
-  "p",
-  "m",
-  "cursor",
-  "gap",
-  "content",
-  "b",
-  "br",
-  "shadow",
+import { typeKeys } from "type-transform-utils"
+import { CombineProps } from "../types"
 
-  // extends
-  "flex",
-  "flexCol",
-  "flexRow",
-  "relative",
-  "absolute",
-  "fixed",
-  "hFull",
-  "wFull",
-  "objectCover",
-  "boxBorder",
-  "boxContent",
-  "itemsCenter",
-  "textCenter",
-  "justifyCenter",
-  "flex1",
-];
+export const styleKeys = typeKeys<CombineProps>()

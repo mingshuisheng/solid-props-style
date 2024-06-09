@@ -1,9 +1,11 @@
 import type { CSSObject } from "@emotion/serialize";
-import { Properties } from "csstype";
+import type { Properties } from "csstype";
 
-export interface ClassStyle extends CSSObject {}
+export interface ClassStyle extends CSSObject { }
 
-export interface BaseProps {
+type ExtendsPropertieKeys = "top" | "bottom" | "left" | "right" | "inset";
+
+export interface BaseProps extends Pick<Properties, ExtendsPropertieKeys> {
   d: Properties["display"];
   h: Properties["height"] | "full";
   w: Properties["width"] | "full";
@@ -32,6 +34,7 @@ export type ExtendsBooleanKeys =
   | "relative"
   | "absolute"
   | "fixed"
+  | "sticky"
   | "hFull"
   | "wFull"
   | "objectCover"
@@ -39,10 +42,17 @@ export type ExtendsBooleanKeys =
   | "boxContent"
   | "itemsCenter"
   | "textCenter"
+  | "justifyNormal"
+  | "justfyStart"
+  | "justfyEnd"
   | "justifyCenter"
+  | "justfyBetween"
+  | "justfyAround"
+  | "justfyEvenly"
+  | "justfyStretch"
   | "flex1"
 
-export interface ExtendsProps extends Record<ExtendsBooleanKeys, boolean> {}
+export interface ExtendsProps extends Record<ExtendsBooleanKeys, boolean> { }
 export type ExtendsPropsKeys = keyof ExtendsProps;
 
 type Combination<T extends string[]> = Exclude<AllCombs<T>, "" | `${string}-`>;
@@ -53,11 +63,11 @@ type AllCombs<T extends string[]> = T extends [
   ? F | `${F}-${AllCombs<R>}` | AllCombs<R>
   : "";
 
-type PseudoPrefix = Combination<["dark", "hover", "focus", "before" | "after"]>;
+type PseudoPrefix = Combination<["dark", "hover", "focus", "active", "before" | "after"]>;
 
 type AttributifyNames<K extends string> = K | `${PseudoPrefix}:${K}`;
 
-export interface CombineProps extends BaseProps, ExtendsProps {}
+export interface CombineProps extends BaseProps, ExtendsProps { }
 
 export type StyleProps = {
   [K in keyof CombineProps as AttributifyNames<K>]?: CombineProps[K];

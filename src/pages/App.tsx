@@ -1,13 +1,13 @@
-import { Div, Input } from "../components";
+import { Button, Div, Input } from "../components";
 import { createSignal, splitProps } from "solid-js";
-import { wrapperCustomComponentProps } from "../utils";
 import "./app.css";
+import { ComponentProps } from "../types";
 
-const MyCom = wrapperCustomComponentProps<{ text: string }>((props) => {
+const MyCom = (props: { text: string } & ComponentProps) => {
   const [text, other] = splitProps(props, ["text"]);
 
   return <Div {...other}>{text.text}</Div>;
-});
+};
 
 function App() {
   const [color, setColor] = createSignal("red");
@@ -32,6 +32,14 @@ function App() {
       dark-hover:bg="blue"
       attr:oo="ttt"
     >
+      <Button
+        cursor="pointer"
+        onClick={undefined}
+        onMouseDown={undefined}
+        onMouseUp={undefined}
+      >
+        123
+      </Button>
       qqq
       <Input
         c="green"

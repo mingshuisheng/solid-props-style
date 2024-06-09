@@ -17,11 +17,3 @@ export function wrapperTagComponentProps<PROPS>(
     return createComponent(component, processors(props));
   };
 }
-
-export function wrapperCustomComponentProps<PROPS>(
-  component: (props: PROPS & ComponentProps) => JSX.Element
-) {
-  return (props: PROPS & ComponentProps) => {
-    return createComponent(component, props);
-  };
-}
