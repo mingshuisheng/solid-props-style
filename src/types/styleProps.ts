@@ -1,59 +1,7 @@
-import type { CSSObject } from "@emotion/serialize";
+import { BaseProps } from "./base";
+import { UtilityProps } from "./utility";
 import type { Properties } from "csstype";
 
-export interface ClassStyle extends CSSObject { }
-
-type ExtendsPropertieKeys = "top" | "bottom" | "left" | "right" | "inset";
-
-export interface BaseProps extends Pick<Properties, ExtendsPropertieKeys> {
-  d: Properties["display"];
-  h: Properties["height"] | "full";
-  w: Properties["width"] | "full";
-  c: Properties["color"];
-  userSelect: Properties["userSelect"];
-  bg: Properties["backgroundColor"];
-  z: Properties["zIndex"];
-  objectFit: Properties["objectFit"];
-  boxSizing: Properties["boxSizing"];
-  transition: Properties["transition"];
-  transform: Properties["transform"];
-  filter: Properties["filter"];
-  p: Properties["padding"];
-  m: Properties["margin"];
-  cursor: Properties["cursor"];
-  gap: Properties["gap"];
-  b: Properties["border"];
-  br: Properties["borderRadius"];
-  shadow: Properties["boxShadow"];
-}
-
-export type ExtendsBooleanKeys =
-  | "flex"
-  | "flexCol"
-  | "flexRow"
-  | "relative"
-  | "absolute"
-  | "fixed"
-  | "sticky"
-  | "hFull"
-  | "wFull"
-  | "objectCover"
-  | "boxBorder"
-  | "boxContent"
-  | "itemsCenter"
-  | "textCenter"
-  | "justifyNormal"
-  | "justfyStart"
-  | "justfyEnd"
-  | "justifyCenter"
-  | "justfyBetween"
-  | "justfyAround"
-  | "justfyEvenly"
-  | "justfyStretch"
-  | "flex1"
-
-export interface ExtendsProps extends Record<ExtendsBooleanKeys, boolean> { }
-export type ExtendsPropsKeys = keyof ExtendsProps;
 
 type Combination<T extends string[]> = Exclude<AllCombs<T>, "" | `${string}-`>;
 type AllCombs<T extends string[]> = T extends [
@@ -67,7 +15,7 @@ type PseudoPrefix = Combination<["dark", "hover", "focus", "active", "before" | 
 
 type AttributifyNames<K extends string> = K | `${PseudoPrefix}:${K}`;
 
-export interface CombineProps extends BaseProps, ExtendsProps { }
+export interface CombineProps extends BaseProps, UtilityProps { }
 
 export type StyleProps = {
   [K in keyof CombineProps as AttributifyNames<K>]?: CombineProps[K];
@@ -81,5 +29,3 @@ export type StyleProps = {
     Properties["content"]
   >
 >;
-
-export type StylePropName = keyof StyleProps;

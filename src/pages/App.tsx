@@ -31,6 +31,7 @@ function App() {
       bg="green"
       dark-hover:bg="blue"
       attr:oo="ttt"
+      attr:icc="ppp"
     >
       <Button
         cursor="pointer"

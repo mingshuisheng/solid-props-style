@@ -1,5 +1,5 @@
 import { JSX } from "solid-js";
-import { generatorTag, wrapperTagComponentProps } from "../utils";
+import { generatorTag, wrapperTagComponentProps } from "../tagUtils";
 
 function tagWrapper<T extends keyof JSX.HTMLElementTags>(tagName: T) {
   let tag = generatorTag(tagName);

@@ -1,12 +1,8 @@
 import { JSX } from "solid-js/jsx-runtime";
-import { ComponentProps } from "../types";
-import {
-  processClassStyle,
-  processStyleKeys,
-  processVar,
-} from "./processClass";
+import { ComponentProps } from "../types/index.ts";
 import { createComponent } from "solid-js/web";
-import { flow } from "./flow.ts";
+import { flow } from "../utils/flow.ts";
+import { processClassStyle, processStyleKeys, processVar } from "../processors/index.ts";
 
 const processors = flow(processClassStyle, processVar, processStyleKeys);
 

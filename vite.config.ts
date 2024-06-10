@@ -11,6 +11,9 @@ export default defineConfig({
       exclude: ["src/index.tsx", "src/pages/**/*.*"]
     })
   ],
+  server: {
+    port: 5174
+  },
   build: {
     target: "esnext",
     lib: {

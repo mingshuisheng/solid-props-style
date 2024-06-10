@@ -1,4 +1,5 @@
-import { StyleProps, ClassStyle } from "./styleProps.ts";
+import { StyleProps } from "./styleProps.ts";
+import type { CSSObject } from "@emotion/serialize";
 
 export interface CustomProps {
   [key: `attr:${string}`]: any;
@@ -9,5 +10,5 @@ export interface StyleVarProps {
 }
 
 export interface ComponentProps extends StyleProps, CustomProps, StyleVarProps {
-  classStyle?: ClassStyle;
+  classStyle?: CSSObject;
 }
