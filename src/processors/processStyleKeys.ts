@@ -2,7 +2,6 @@ import { $PROXY } from "solid-js";
 import { styleKeys, createPropsProxy, createCss } from "../utils";
 
 const styleKeyReg = styleKeys.map((key) => RegExp(`^(.+:${key}|${key}$)`));
-console.log(styleKeyReg)
 const isStyleKey = (key: string) => styleKeyReg.some((reg) => reg.test(key))
 
 export function processStyleKeys<T>(props: T): T {

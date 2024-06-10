@@ -1,4 +1,4 @@
-import { StyleProps } from "./styleProps.ts";
+import type { StyleProps } from "./styleProps.ts";
 import type { CSSObject } from "@emotion/serialize";
 
 export interface CustomProps {

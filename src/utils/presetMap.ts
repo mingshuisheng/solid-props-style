@@ -1,8 +1,11 @@
-import { BoxSizing, Flex, ObjectFit, Overflow, Position, Size, UtilityPropsKeys } from "../types";
+import { BoxSizing, Flex, MarginUtility, ObjectFit, Overflow, PaddingUtility, Position, Size, TextAlign, UtilityPropsKeys } from "../types";
 import type { CSSObject } from "@emotion/serialize";
+import { valueToArr } from "./tupleUtils";
 
-type PresetMapValue = CSSObject;
-type PresetMap<T extends keyof any> = Record<T, PresetMapValue>
+type PresetMapValue<V> = CSSObject | ((value: V) => CSSObject);
+type PresetMap<T> = {
+  [P in keyof T]: PresetMapValue<T[P]>;
+}
 
 export const objectFitMap: PresetMap<ObjectFit> = {
   objectCover: { objectFit: "cover" },
@@ -31,7 +34,6 @@ export const flexMap: PresetMap<Flex> = {
   flexCol: { flexDirection: "column" },
   flexRow: { flexDirection: "row" },
   itemsCenter: { alignItems: "center" },
-  textCenter: { textAlign: "center" },
   justifyNormal: { justifyContent: "normal" },
   justfyStart: { justifyContent: "flex-start" },
   justfyEnd: { justifyContent: "flex-end" },
@@ -61,11 +63,51 @@ export const overflowMap: PresetMap<Overflow> = {
   overflowYScroll: { overflowY: "scroll" }
 }
 
-export const presetMap: Record<UtilityPropsKeys, PresetMapValue> = {
+export const textAlign: PresetMap<TextAlign> = {
+  textJustify: { textAlign: "justify" },
+  textStart: { textAlign: "start" },
+  textEnd: { textAlign: "end" },
+  textCenter: { textAlign: "center" }
+}
+
+export const margin: PresetMap<MarginUtility> = {
+  mx: (mx) => {
+    let [marginLeft, marginRight] = valueToArr(mx)
+    return { marginLeft, marginRight }
+  },
+  ml: (marginLeft) => ({ marginLeft }),
+  mr: (marginRight) => ({ marginRight }),
+  my: (my) => {
+    let [marginTop, marginBottom] = valueToArr(my)
+    return { marginTop, marginBottom }
+  },
+  mt: (marginTop) => ({ marginTop }),
+  mb: (marginBottom) => ({ marginBottom }),
+}
+
+export const padding: PresetMap<PaddingUtility> = {
+  px: (px) => {
+    let [paddingLeft, paddingRight] = valueToArr(px)
+    return { paddingLeft, paddingRight }
+  },
+  pl: (paddingLeft) => ({ paddingLeft }),
+  pr: (paddingRight) => ({ paddingRight }),
+  py: (py) => {
+    let [paddingTop, paddingBottom] = valueToArr(py)
+    return { paddingTop, paddingBottom }
+  },
+  pt: (paddingTop) => ({ paddingTop }),
+  pb: (paddingBottom) => ({ paddingBottom }),
+}
+
+export const presetMap: Record<UtilityPropsKeys, PresetMapValue<any>> = {
   ...objectFitMap,
   ...positionMap,
   ...sizeMap,
   ...boxSizingMap,
   ...flexMap,
   ...overflowMap,
+  ...textAlign,
+  ...margin,
+  ...padding
 };

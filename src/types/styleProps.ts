@@ -1,5 +1,5 @@
-import { BaseProps } from "./base";
-import { UtilityProps } from "./utility";
+import type { BaseProps } from "./base";
+import type { UtilityProps } from "./utility";
 import type { Properties } from "csstype";
 
 

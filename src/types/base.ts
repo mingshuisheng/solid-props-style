@@ -15,6 +15,7 @@ type ExtendsPropertieKeys =
   | "filter"
   | "cursor"
   | "gap"
+  | "overflow"
 
 export interface BaseProps extends Pick<Properties, ExtendsPropertieKeys> {
   d: Properties["display"];

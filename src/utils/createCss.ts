@@ -14,7 +14,9 @@ const processStyleSelectors = flow<[string, string]>(
 
 const insertedStyle = new Set<string>();
 export function createCss(key: string, realValue: any): any {
-  const selectorValue = typeof realValue === "boolean" ? realValue : "css-" + hashString(typeof realValue === "undefined" ? "undefined" : JSON.stringify(realValue))
+  const selectorValue = typeof realValue === "boolean" ? realValue
+    : "css-" + hashString(typeof realValue === "undefined" ? "undefined" : JSON.stringify(realValue))
+
   const selector: string = `[${key}="${selectorValue}"]`;
   const [_, realSelector] = processStyleSelectors([key, selector]);
   if (insertedStyle.has(realSelector)) {
@@ -65,14 +67,19 @@ function processPseudoElement([key, selector]: [string, string]): [
   return [key, selector];
 }
 
+const presetMapKeys = Object.keys(presetMap)
+
 function processStyle(key: string, value: any): CSSObject {
   const keys = key.split(":");
   let attr = keys[keys.length - 1];
   attr = attrMap[attr] ?? attr;
 
-  return (
-    presetMap[attr as UtilityPropsKeys] ?? {
+  if (presetMapKeys.includes(key)) {
+    const preset = presetMap[key as UtilityPropsKeys];
+    return (typeof preset === "function") ? preset(value) : preset
+  } else {
+    return {
       [`${attr}`]: value,
     }
-  );
+  }
 }
