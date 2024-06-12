@@ -1,44 +1,142 @@
 export type SizeType = number | string;
+export type BooleanProps<T extends string> = Record<T, boolean>
 
-export type ObjectFit = Record<
+export type Display = BooleanProps<
+  | "block"
+  | "inlineBlock"
+  | "inline"
+  | "flex"
+  | "inlineFlex"
+  | "table"
+  | "inlineTable"
+  | "tableCaption"
+  | "tableCell"
+  | "tableColumn"
+  | "tableColumnGroup"
+  | "tableFooterGroup"
+  | "tableHeaderGroup"
+  | "tableRowGroup"
+  | "tableRow"
+  | "flowRoot"
+  | "grid"
+  | "inlineGrid"
+  | "contents"
+  | "listItem"
+  | "hidden"
+>
+
+export type ObjectFit = BooleanProps<
+  | "objectContain"
   | "objectCover"
-  , boolean>
+  | "objectFill"
+  | "objectNone"
+  | "objectScaleDown"
+>
 
 
-export type Position = Record<
+export type Position = BooleanProps<
   | "static"
   | "absolute"
   | "relative"
   | "sticky"
   | "fixed"
-  , boolean>
+>
 
 
-export type Size = Record<
+export type Size = BooleanProps<
   | "wFull"
   | "hFull"
-  , boolean>
+>
 
-export type BoxSizing = Record<
+export type BoxSizing = BooleanProps<
   | "boxBorder"
   | "boxContent"
-  , boolean>
+>
 
-export type Flex = Record<
-  | "flex"
-  | "flexCol"
+export type FlexDirection = BooleanProps<
   | "flexRow"
-  | "itemsCenter"
-  | "justifyNormal"
-  | "justfyStart"
-  | "justfyEnd"
-  | "justifyCenter"
-  | "justfyBetween"
-  | "justfyAround"
-  | "justfyEvenly"
-  | "justfyStretch"
+  | "flexRowReverse"
+  | "flexCol"
+  | "flexColReverse"
+>
+
+export type FlexWrap = BooleanProps<
+  | "flexWrap"
+  | "flexWrapReverse"
+  | "flexNowrap"
+>
+
+export type Flex = BooleanProps<
   | "flex1"
-  , boolean>
+  | "flexAuto"
+  | "flexInitial"
+  | "flexNone"
+>
+
+export type FlexGrow = BooleanProps<
+  | "grow"
+  | "grow0"
+>
+
+export type FlexShrink = BooleanProps<
+  | "shrink"
+  | "shrink0"
+>
+
+export type JustifyContent = BooleanProps<
+  | "justifyNormal"
+  | "justifyStart"
+  | "justifyEnd"
+  | "justifyCenter"
+  | "justifyBetween"
+  | "justifyAround"
+  | "justifyEvenly"
+  | "justifyStretch"
+>
+
+export type JustifyItems = BooleanProps<
+  | "justifyItemsStart"
+  | "justifyItemsEnd"
+  | "justifyItemsCenter"
+  | "justifyItemsStretch"
+>
+
+export type JustifySelf = BooleanProps<
+  | "justifySelfAuto"
+  | "justifySelfStart"
+  | "justifySelfEnd"
+  | "justifySelfCenter"
+  | "justifySelfStretch"
+>
+
+export type AlignContent = BooleanProps<
+  | "contentNormal"
+  | "contentCenter"
+  | "contentStart"
+  | "contentEnd"
+  | "contentBetween"
+  | "contentAround"
+  | "contentEvenly"
+  | "contentBaseline"
+  | "contentStretch"
+>
+
+export type AlignItems = BooleanProps<
+  | "itemsStart"
+  | "itemsEnd"
+  | "itemsCenter"
+  | "itemsBaseline"
+  | "itemsStretch"
+>
+
+export type AlignSelf = BooleanProps<
+  | "selfAuto"
+  | "selfStart"
+  | "selfEnd"
+  | "selfCenter"
+  | "selfStretch"
+  | "selfBaseLine"
+>
 
 export type Overflow = Record<
   | "overflowAuto"
@@ -84,8 +182,11 @@ export type PaddingUtility = {
   pb: SizeType
 }
 
-export type InnerUtilityProps = ObjectFit
-  & Position & Size & BoxSizing & Flex
+export type InnerUtilityProps =
+  Display & ObjectFit & Position & Size & BoxSizing
+  & FlexDirection & FlexWrap & Flex & FlexGrow & FlexShrink
+  & JustifyContent & JustifyItems & JustifySelf
+  & AlignContent & AlignItems & AlignSelf
   & Overflow & TextAlign & MarginUtility & PaddingUtility
 
 export interface UtilityProps extends InnerUtilityProps { }

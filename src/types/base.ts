@@ -1,6 +1,6 @@
 import type { Properties } from "csstype";
 
-type ExtendsPropertieKeys =
+type ExtendsPropertiesKeys =
   | "top"
   | "bottom"
   | "left"
@@ -15,9 +15,13 @@ type ExtendsPropertieKeys =
   | "filter"
   | "cursor"
   | "gap"
+  | "columnGap"
+  | "rowGap"
   | "overflow"
+  | "opacity"
+  | "flexDirection"
 
-export interface BaseProps extends Pick<Properties, ExtendsPropertieKeys> {
+export interface BaseProps extends Pick<Properties, ExtendsPropertiesKeys> {
   d: Properties["display"];
   h: Properties["height"];
   w: Properties["width"];
@@ -29,4 +33,5 @@ export interface BaseProps extends Pick<Properties, ExtendsPropertieKeys> {
   b: Properties["border"];
   br: Properties["borderRadius"];
   shadow: Properties["boxShadow"];
+  basis: Properties["flexBasis"]
 }
