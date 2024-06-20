@@ -1,3 +1,7 @@
+## Project status
+
+New development effort is focused on [css-attrs](https://github.com/mingshuisheng/css-attrs)
+
 ## Style On Props
 
 support css property and custom attr on element component
